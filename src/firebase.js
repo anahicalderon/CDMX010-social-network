@@ -1,8 +1,13 @@
+// Your web app's Firebase configuration
+
+import { renderPost } from './home.js';
+
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // eslint-disable-next-line import/no-cycle
 import { renderPost } from './lib/home.js';
 
 const firebaseConfig = {
+
   apiKey: 'AIzaSyCE3V_6hn_oiPhJAvfRLJLygBVct9fIZRg',
   authDomain: 'novaapp-67e15.firebaseapp.com',
   projectId: 'novaapp-67e15',
@@ -26,15 +31,25 @@ export const savePost = (post) => db.collection('newPost')
   });
 
 // TRAE LA DATA DE LA BASE DE DATOS.
-export const getData = () => {
-  const postContainer = document.getElementById('printData');
-  db.collection('newPost').orderBy('Fecha', 'desc')
-    .onSnapshot((querySnapshot) => {
-      postContainer.innerHTML = '';
-      querySnapshot.forEach((doc) => {
-        const dataBase = doc.data();
-        postContainer.innerHTML += renderPost(dataBase);
-        // console.log(dataBase);
-      });
+export const getData = db.collection('newPost')// .orderBy('fecha')
+  .onSnapshot((query) => {
+    query.forEach((message) => {
+      const dataBase = message.data();
+      const html2 = ' ';
+
+       console.log(dataBase);
+
+      // renderPost(dataBase);
+      // return dataBase;
+
+      // renderPost(dataBase);
     });
+  });
+
+/*
+const prueba = (title) => { db.collection('newPost').doc(title).get();
+console.log(title);
 };
+
+prueba()
+*/

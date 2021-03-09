@@ -1,8 +1,8 @@
 // Este es el punto de entrada de tu aplicacion
 // eslint-disable-next-line import/no-cycle
-import { home } from './lib/home.js';
-import { login } from './lib/login.js';
-import { post } from './lib/post.js';
+import { home } from './home.js';
+import { logIn } from './logIn.js';
+import post from './post.js';
 
 export const rootDiv = document.getElementById('root');
 
