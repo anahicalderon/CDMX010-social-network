@@ -7,7 +7,15 @@ import { postPage } from './post.js';
 import { novaApp } from './auth/nova.js';
 import { signIn } from './auth/signIn.js';
 import { signUp } from './auth/signUp.js';
-import { signUpWithEmailAndPassword, signInWithEmailAndPassword, signOut, signUpWithGoogle } from './auth.js';
+import {
+  signUpWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  signUpWithGoogle,
+}
+  from './auth.js';
+// eslint-disable-next-line import/no-cycle
+import { editPost } from './app.js';
 
 export const rootDiv = document.getElementById('root');
 
@@ -74,15 +82,15 @@ const addButtonEvents = () => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const click = e.target.dataset.action;
-      console.log(click);
+      const id = e.target.dataset.id;
       // eslint-disable-next-line no-use-before-define
-      eventsController(click);
+      eventsController(click, id);
     });
   });
 };
 
 // Esta es la aplicación que genera el routing
-const eventsController = (e) => {
+const eventsController = (e, id) => {
   // eslint-disable-next-line default-case
   switch (e) {
     case 'novaApp':
@@ -123,6 +131,10 @@ const eventsController = (e) => {
       break;
     case 'signUpWithGoogle':
       signUpWithGoogle();
+      break;
+    case 'edit':
+      editPost(id);
+      break;
   }
 };
 
