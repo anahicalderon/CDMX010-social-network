@@ -211,6 +211,7 @@ font-size: 14px;
 
 .button {
   /*margin-left: 38px;*/
+  display:flex;
   border-radius: 3px;
   margin-top: 16px;
   background: #56F89A;
@@ -219,6 +220,21 @@ font-size: 14px;
   font-size: 14px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
+.editButton {
+  /*margin-left: 38px;*/
+  border-radius: 3px;
+  margin-top: 16px;
+  background: #56F89A;
+  font-family: "Lufga", sans-serif;
+  border: 1px solid #56F89A;
+  font-size: 14px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.dissapear {
+  display: none;
+}
+
 
 /* Nova App Page*/
 
