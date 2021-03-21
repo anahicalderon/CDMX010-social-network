@@ -14,7 +14,7 @@ import {
   signUpWithGoogle,
 }
   from './auth.js';
-import { editPost, makingPost, deletePostFunction } from './postFunctions.js';
+import { editPost, makingPost } from './postFunctions.js';
 
 // eslint-disable-next-line import/no-cycle
 
@@ -113,7 +113,7 @@ const eventsController = (e, id) => {
       editPost(id);
       break;
     case 'delete':
-      deletePostFunction(id);
+      firebase.deletePost(id);
       break;
   }
 };

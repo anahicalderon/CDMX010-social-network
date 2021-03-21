@@ -55,18 +55,6 @@ export const deletePost = (id) => {
     });
 };
 
-// Esta es la que ctualizaria
-export const newCurrentPost = (newPostEdit, id) => db.collection('newPost').doc(id)
-  .update({
-    Title: newPostEdit.title,
-    Subtitle: newPostEdit.subtitle,
-    Body: newPostEdit.body,
-    Fecha: Date.now(),
-  });
-
-// ESTE SE PODRIA IR A FIREBASE
-
-// EDITAR POST
 
 // export const editPost = (id, Title, Subtitle, Body) => {
 //   document.getElementById('title').value = Title;

@@ -81,6 +81,3 @@ export const makingPost = () => {
   }
 };
 
-export const deletePostFunction = (id) => {
-  deletePost(id);
-};
