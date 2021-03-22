@@ -14,7 +14,7 @@ import {
   signUpWithGoogle,
 }
   from './auth.js';
-import {deletePostFunction, postEditado, editPost, editingPost } from './app.js';
+import { editPost, makingPost } from './postFunctions.js';
 
 // eslint-disable-next-line import/no-cycle
 
@@ -25,34 +25,7 @@ export const loadFirebase = (firebaseFromApp) => {
   firebase = firebaseFromApp;
 };
 
-export const makingPost = () => {
-  const titleCard = document.getElementById('title');
-  const subtitleCard = document.getElementById('subtitle');
-  const bodyCard = document.getElementById('body');
 
-  const post = {
-    title: titleCard.value,
-    subtitle: subtitleCard.value,
-    body: bodyCard.value,
-    fecha: Date.now(),
-  };
-
-  if (!titleCard.value.trim() || !subtitleCard.value.trim() || !bodyCard.value.trim()) {
-    alert('Input vacío!');
-    return;
-  } if (editingPost === false) {
-    firebase.savePost(post)
-      .then((docRef) => {
-        console.log('Document written whith ID: ', docRef.id);
-        titleCard.value = '';
-        subtitleCard.value = '';
-        bodyCard.value = '';
-      })
-      .catch((error) => console.log(error));
-  } if (editingPost === true) {
-    editPost();
-  }
-};
 
 export const routes = {
   '/': novaApp,
@@ -140,8 +113,8 @@ const eventsController = (e, id) => {
       editPost(id);
       break;
     case 'delete':
-      deletePostFunction(id);
-    break;
+      firebase.deletePost(id);
+      break;
   }
 };
 
