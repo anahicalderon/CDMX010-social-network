@@ -14,8 +14,9 @@ import {
   signUpWithGoogle,
 }
   from './auth.js';
+import { editPost, makingPost } from './postFunctions.js';
+
 // eslint-disable-next-line import/no-cycle
-import { editPost } from './app.js';
 
 export const rootDiv = document.getElementById('root');
 
@@ -24,35 +25,7 @@ export const loadFirebase = (firebaseFromApp) => {
   firebase = firebaseFromApp;
 };
 
-export const makingPost = () => {
-  const titleCard = document.getElementById('title');
-  const subtitleCard = document.getElementById('subtitle');
-  const bodyCard = document.getElementById('body');
 
-  // postButton.addEventListener('click', (e) => {
-  //   e.preventDefault();
-
-  const post = {
-    title: titleCard.value,
-    subtitle: subtitleCard.value,
-    body: bodyCard.value,
-    fecha: Date.now(),
-  };
-
-  if (!titleCard.value.trim() || !subtitleCard.value.trim() || !bodyCard.value.trim()) {
-    alert('Input vacío!');
-    return;
-  }
-
-  firebase.savePost(post)
-    .then((docRef) => {
-      console.log('Document written whith ID: ', docRef.id);
-      titleCard.value = '';
-      subtitleCard.value = '';
-      bodyCard.value = '';
-    })
-    .catch((error) => console.log(error));
-};
 
 export const routes = {
   '/': novaApp,
@@ -83,6 +56,7 @@ const addButtonEvents = () => {
       e.preventDefault();
       const click = e.target.dataset.action;
       const id = e.target.dataset.id;
+      console.log(id);
       // eslint-disable-next-line no-use-before-define
       eventsController(click, id);
     });
@@ -132,8 +106,14 @@ const eventsController = (e, id) => {
     case 'signUpWithGoogle':
       signUpWithGoogle();
       break;
+    case 'signInWithGoogle':
+      signUpWithGoogle();
+      break;
     case 'edit':
       editPost(id);
+      break;
+    case 'delete':
+      firebase.deletePost(id);
       break;
   }
 };

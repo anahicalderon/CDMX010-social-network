@@ -17,6 +17,7 @@ firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 // eslint-disable-next-line no-unused-vars
 export const db = firebase.firestore();
+export const currentPost = (id) => db.collection('newPost').doc(id).get();
 
 // GUARDA INFORMACIÓN DE USUARIIO EN LA BASE DE DATOS.
 export const savePost = (post) => db.collection('newPost')
@@ -48,12 +49,11 @@ export const deletePost = (id) => {
   db.collection('newPost').doc(id).delete()
     .then((res) => {
       alert('Post eliminado correctamente');
-    }).catch((error) => {
+    })
+    .catch((error) => {
       alert('Ups, ocurrio un error');
     });
 };
-
-// EDITAR POST
 
 
 // export const editPost = (id, Title, Subtitle, Body) => {
