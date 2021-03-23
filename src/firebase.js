@@ -88,19 +88,22 @@ export const userInfo = () => {
 
 export const likes = (id) => {
   currentPost(id)
-    .then((doc) => {
-      const userEmail = auth.currentUser.email; // Accedemos al correo de nuestro usuario
+    .then((result) => {
+      const userEmail = auth.currentUser.uid; // Accedemos al correo de nuestro usuario
       console.log(userEmail);
-      const likesArray = doc.data(); // accedes al array de likes
+      const likesArray = result.data().Like; // accedes al array de likes
       console.log(likesArray);
       const cantLikes = document.getElementById('likesNumber'); // Este es el que va a ir cambiando
-      console.log(likesArray.Like);
-      // const iterador = likesArray.includes(userEmail);
+      // console.log(likesArray.Like);
+      const iterador = likesArray.includes(userEmail);
       if (iterador === false) {
-        likesArray.push(userEmail);
-        console.log(likesArray.length);
+        // likesArray.unshift(userEmail);
+        db.collection('newPost').doc(id).update({ Like: db.FieldValue.arrayUnion(userEmail) });
+        // updateLike(id, userEmail);
+      } else {
+        db.collection('newPost').doc(id).update({ Like: db.FieldValue.arrayRemove(userEmail) });
+        // updateDislike(id, userEmail);
       }
       cantLikes.innerHTML = likesArray.length;
-      console.log(likesArray);
     });
 };
