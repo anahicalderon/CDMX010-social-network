@@ -12,7 +12,7 @@ export const renderPost = (param, id) => `
     </div>
     <div id="iconHeart">
       <img id= "like" class="icon" src="resources/Heart.png" alt="image" data-action="like" data-id ="${id}">
-      <p id="likesNumber">0</p>
+      <p id="likesNumber"></p>
     </div>
     <div class="icons">
       <img class="icon" src="resources/Trash.png" alt="imagen" data-action="delete" data-id ="${id}">
@@ -21,11 +21,11 @@ export const renderPost = (param, id) => `
   </div>
   `;
 
-export const home = (container, firebase, userName) => {
+export const home = (container, firebase) => {
   const html = `
-  <div id="app">
+  <div id="app"> 
     ${nav}
-      <h1>¡Hola Elena!</h1>
+      <h1 id="userName"></h1>
       
     <div>
       <div id="newPost">
@@ -42,4 +42,6 @@ export const home = (container, firebase, userName) => {
   // eslint-disable-next-line no-param-reassign
   container.innerHTML = html;
   firebase.getData();
+  firebase.userInfo();
+  firebase.likes();
 };

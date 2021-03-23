@@ -4,9 +4,9 @@ import { auth } from './firebase.js';
 
 // // AUTH FROM FIREBASE
 export const signUpWithEmailAndPassword = () => {
-  const userName = document.getElementById("userName").value;
-  const userEmail = document.getElementById("userEmail").value;
-  const userPassword = document.getElementById("userPassword").value;
+  const userName = document.getElementById('userName').value;
+  const userEmail = document.getElementById('userEmail').value;
+  const userPassword = document.getElementById('userPassword').value;
   const expression = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
   if (userName.length === 0
@@ -22,10 +22,7 @@ export const signUpWithEmailAndPassword = () => {
         onNavigate('/home');
       })
       .catch((error) => {
-        alert('Usuario ya registrado');
-        onNavigate('/signIn');
-        let errorCode = error.code;
-        let errorMessage = error.message;
+        console.log(error);
       });
   }
 };
@@ -44,12 +41,13 @@ export const signInWithEmailAndPassword = () => {
   } else {
     auth.signInWithEmailAndPassword(userEmail, userPassword)
       .then((user) => {
+        console.log(user);
         onNavigate('/home');
       })
       .catch((error) => {
         alert('El correo o la contraseña ingresados son inválidos');
-        let errorCode = error.code;
-        let errorMessage = error.message;
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
       });
   }
 };
@@ -67,15 +65,18 @@ export const signOut = () => {
 export const signUpWithGoogle = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
-    .then((result) => {
+    .then((user) => {
+      console.log(user);
       onNavigate('/home');
     }).catch((error) => {
       console.log(error);
       // eslint-disable-next-line no-alert
-      alert(errorMessage, 4000);
     });
 };
 
+const informationUser = () => auth.currentUser;
+const user = informationUser();
+console.log(user);
 
 // // IS A VIEWER THAT CHECKS IF THE USER EXISTS
 // export const userViewer = auth.onAuthStateChanged(user => {

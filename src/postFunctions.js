@@ -80,4 +80,3 @@ export const makingPost = () => {
       .catch((error) => console.log(error));
   }
 };
-

@@ -1,9 +1,10 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // eslint-disable-next-line import/no-cycle
-import { renderPost } from './home.js';
+import { novaApp } from './auth/nova.js';
+import { home, renderPost } from './home.js';
+import { onNavigate } from './routes.js';
 
 const firebaseConfig = {
-
   apiKey: 'AIzaSyCE3V_6hn_oiPhJAvfRLJLygBVct9fIZRg',
   authDomain: 'novaapp-67e15.firebaseapp.com',
   projectId: 'novaapp-67e15',
@@ -26,6 +27,7 @@ export const savePost = (post) => db.collection('newPost')
     Subtitle: post.subtitle,
     Body: post.body,
     Fecha: Date.now(),
+    Like: [],
   });
 
 // TRAE LA DATA DE LA BASE DE DATOS.
@@ -50,35 +52,55 @@ export const deletePost = (id) => {
     .then((res) => {
       alert('Post eliminado correctamente');
     })
-    .catch((error) => {
+    .catch(() => {
       alert('Ups, ocurrio un error');
     });
 };
 
+export const stateVerif = () => {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      const animate = () => {
+        setTimeout(() => {
+          onNavigate('/home');
+        }, 1500);
+      };
+      animate();
+    } else {
+      const animate = () => {
+        setTimeout(() => {
+          onNavigate('/login');
+        }, 1500);
+      };
+      animate();
+    }
+  });
+};
 
-// export const editPost = (id, Title, Subtitle, Body) => {
-//   document.getElementById('title').value = Title;
-//   document.getElementById('subtitle').value = Subtitle;
-//   document.getElementById('body').value = Body;
-//   const editButton = document.getElementById('btn');
-//   editButton.innerHTML = 'Editar';
+export const userInfo = () => {
+  const user = firebase.auth().currentUser;
+  const displayUserInfo = document.querySelector('#userName');
+  const userName = user.email;
+  const welcomeTemplate = `Bienvenida ${userName}`;
 
-//   editButton.addEventListener('click', () => {
-//     const post = db.collection('newPost').doc(id);
-//     const newTitle = document.getElementById('title').value;
-//     const newSubtitle = document.getElementById('subtitle').value;
-//     const newBody = document.getElementById('body').value;
+  displayUserInfo.innerHTML = welcomeTemplate;
+};
 
-//     post.update({
-//       Title: post.title,
-//       Subtitle: post.subtitle,
-//       Body: post.body,
-//     })
-//       .then((res) => {
-//         alert('Post eliminado correctamente');
-//         editButton.innerHTML = 'Publicar';
-//       }).catch((error) => {
-//         alert('Ups, ocurrio un error');
-//       });
-//   });
-// };
+export const likes = (id) => {
+  currentPost(id)
+    .then((doc) => {
+      const userEmail = auth.currentUser.email; // Accedemos al correo de nuestro usuario
+      console.log(userEmail);
+      const likesArray = doc.data(); // accedes al array de likes
+      console.log(likesArray);
+      const cantLikes = document.getElementById('likesNumber'); // Este es el que va a ir cambiando
+      console.log(likesArray.Like);
+      // const iterador = likesArray.includes(userEmail);
+      if (iterador === false) {
+        likesArray.push(userEmail);
+        console.log(likesArray.length);
+      }
+      cantLikes.innerHTML = likesArray.length;
+      console.log(likesArray);
+    });
+};

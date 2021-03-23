@@ -1,6 +1,4 @@
-import { onNavigate } from '../routes.js';
-
-export const novaApp = (container) => {
+export const novaApp = (container, firebase) => {
   const html = `
         <div id="novaAppPage">
           <img id="inicialLogo" src="resources/novaAppImage.png" alt="Inicial logo" data-action="login">
@@ -8,11 +6,5 @@ export const novaApp = (container) => {
         `;
     // eslint-disable-next-line no-param-reassign
   container.innerHTML = html;
-
-  const animate = () => {
-    setTimeout(() => {
-      onNavigate('/login');
-    }, 1500);
-  };
-  animate();
+  firebase.stateVerif();
 };

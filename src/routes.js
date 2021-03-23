@@ -25,8 +25,6 @@ export const loadFirebase = (firebaseFromApp) => {
   firebase = firebaseFromApp;
 };
 
-
-
 export const routes = {
   '/': novaApp,
   '/home': home,
@@ -114,6 +112,9 @@ const eventsController = (e, id) => {
       break;
     case 'delete':
       firebase.deletePost(id);
+      break;
+    case 'like':
+      firebase.likes(id);
       break;
   }
 };
