@@ -65,6 +65,7 @@ export const makingPost = () => {
     subtitle: subtitleCard.value,
     body: bodyCard.value,
     fecha: Date.now(),
+    Like: [],
   };
 
   if (!titleCard.value.trim() || !subtitleCard.value.trim() || !bodyCard.value.trim()) {
@@ -80,4 +81,3 @@ export const makingPost = () => {
       .catch((error) => console.log(error));
   }
 };
-
