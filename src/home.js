@@ -12,7 +12,7 @@ export const renderPost = (param, id) => `
     </div>
     <div id="iconHeart">
       <img id= "like" class="icon" src="resources/Heart.png" alt="image" data-action="like" data-id ="${id}">
-      <p id="likesNumber">${param.Like}</p>
+      <p id="likesNumber">${param.Like.length}</p>
     </div>
     <div class="icons">
       <img class="icon" src="resources/Trash.png" alt="imagen" data-action="delete" data-id ="${id}">

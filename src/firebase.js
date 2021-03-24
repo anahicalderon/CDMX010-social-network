@@ -85,7 +85,7 @@ export const userInfo = () => {
 
   displayUserInfo.innerHTML = welcomeTemplate;
 };
-
+/*
 export const likes = (id) => {
   currentPost(id)
     .then((result) => {
@@ -105,5 +105,30 @@ export const likes = (id) => {
         // updateDislike(id, userEmail);
       }
       cantLikes.innerHTML = likesArray.length;
+    });
+};
+*/
+
+export const likes = (id) => {
+  const userEmail = auth.currentUser.uid; // Accedemos al correo de nuestro usuario
+  console.log(userEmail);
+  currentPost(id)
+    .then((result) => {
+      const postData = result.data(); // accedes al array de likes
+      const likesArray = postData.Like;
+      console.log(likesArray);
+      const likeViewer = likesArray.includes(userEmail);
+      console.log(likeViewer);
+
+      if (likeViewer === false) {
+        // likesArray.unshift(userEmail);
+        db.collection('newPost').doc(id).update({ Like: firebase.firestore.FieldValue.arrayUnion(userEmail) });
+        // updateLike(id, userEmail);
+      } else {
+        db.collection('newPost').doc(id).update({ Like: firebase.firestore.FieldValue.arrayRemove(userEmail) });
+        // updateDislike(id, userEmail);
+      }
+    }).catch(() => {
+      console.log("an error has ocurried")
     });
 };
