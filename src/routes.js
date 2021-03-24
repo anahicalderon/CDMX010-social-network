@@ -12,17 +12,50 @@ import {
   signInWithEmailAndPassword,
   signOut,
   signUpWithGoogle,
+  signInWithGoogle,
 }
   from './auth.js';
-import { editPost, makingPost } from './postFunctions.js';
-
-// eslint-disable-next-line import/no-cycle
+import { deleteModal } from './PostController/modals.js';
+// import { deletePost } from './firebase.js';
+// import { deletePost } from './firebase.js';
 
 export const rootDiv = document.getElementById('root');
+const modalContainer = document.getElementById('modalContainer');
 
 let firebase;
 export const loadFirebase = (firebaseFromApp) => {
   firebase = firebaseFromApp;
+};
+
+export const makingPost = () => {
+  const titleCard = document.getElementById('title');
+  const subtitleCard = document.getElementById('subtitle');
+  const bodyCard = document.getElementById('body');
+
+  // postButton.addEventListener('click', (e) => {
+  //   e.preventDefault();
+
+  const post = {
+    title: titleCard.value,
+    subtitle: subtitleCard.value,
+    body: bodyCard.value,
+    fecha: Date.now(),
+    Like: [],
+  };
+
+  if (!titleCard.value.trim() || !subtitleCard.value.trim() || !bodyCard.value.trim()) {
+    alert('Input vacío!');
+    return;
+  }
+
+  firebase.savePost(post)
+    .then((doc) => {
+      console.log('Document written whith ID: ', doc.id);
+      titleCard.value = '';
+      subtitleCard.value = '';
+      bodyCard.value = '';
+    })
+    .catch((error) => console.log(error));
 };
 
 export const routes = {
@@ -54,13 +87,25 @@ const addButtonEvents = () => {
       e.preventDefault();
       const click = e.target.dataset.action;
       const id = e.target.dataset.id;
-      console.log(id);
+      if (e.target.dataset.action === 'confirm') {
+        // const confirmId = e.target.dataset.id;
+        // console.log(confirmId);
+        firebase.deletePost(id);
+        // console.log('desde el escuchador de eventos', id);
+      } else if (e.target.dataset.action === 'like') {
+        // const likeId = e.target.dataset.id;
+        // console.log(likeId);
+        firebase.likesCounter(id);
+      }
       // eslint-disable-next-line no-use-before-define
       eventsController(click, id);
+      console.log('postID', id);
+      console.log(e.target);
     });
   });
 };
 
+const container = document.getElementById('printData');
 // Esta es la aplicación que genera el routing
 const eventsController = (e, id) => {
   // eslint-disable-next-line default-case
@@ -84,7 +129,7 @@ const eventsController = (e, id) => {
     case 'saveButton':
       makingPost();
       break;
-      // eslint-disable-next-line no-fallthrough
+    // eslint-disable-next-line no-fallthrough
     case 'signInUser':
       signInWithEmailAndPassword();
       break;
@@ -107,15 +152,19 @@ const eventsController = (e, id) => {
     case 'signInWithGoogle':
       signUpWithGoogle();
       break;
-    case 'edit':
-      editPost(id);
-      break;
     case 'delete':
-      firebase.deletePost(id);
+      // deletePost(id);
+      deleteModal(id);
       break;
-    case 'like':
-      firebase.likes(id);
-      break;
+    // case 'confirm':
+    //   deletePost(id);
+    //   break;
+    // case 'edit':
+    //   editPost(id);
+    //   break;
+    // case 'like':
+    //   firebase.likesCounter(id);
+    //   break;
   }
 };
 

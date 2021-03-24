@@ -48,13 +48,16 @@ export const getData = () => {
 
 // BORRA LOS POST
 export const deletePost = (id) => {
+  // console.log('We are inside deletePost');
+  console.log(id);
   db.collection('newPost').doc(id).delete()
-    .then((res) => {
-      alert('Post eliminado correctamente');
+    .then(() => {
+      console.log('Post was deleted in firebase console');
     })
-    .catch(() => {
-      alert('Ups, ocurrio un error');
+    .catch((error) => {
+      console.log('An error have ocurred!');
     });
+  // console.log(id);
 };
 
 export const stateVerif = () => {
@@ -85,50 +88,21 @@ export const userInfo = () => {
 
   displayUserInfo.innerHTML = welcomeTemplate;
 };
-/*
-export const likes = (id) => {
-  currentPost(id)
-    .then((result) => {
-      const userEmail = auth.currentUser.uid; // Accedemos al correo de nuestro usuario
-      console.log(userEmail);
-      const likesArray = result.data().Like; // accedes al array de likes
-      console.log(likesArray);
-      const cantLikes = document.getElementById('likesNumber'); // Este es el que va a ir cambiando
-      // console.log(likesArray.Like);
-      const iterador = likesArray.includes(userEmail);
-      if (iterador === false) {
-        // likesArray.unshift(userEmail);
-        db.collection('newPost').doc(id).update({ Like: db.FieldValue.arrayUnion(userEmail) });
-        // updateLike(id, userEmail);
-      } else {
-        db.collection('newPost').doc(id).update({ Like: db.FieldValue.arrayRemove(userEmail) });
-        // updateDislike(id, userEmail);
-      }
-      cantLikes.innerHTML = likesArray.length;
-    });
-};
-*/
 
 export const likes = (id) => {
-  const userEmail = auth.currentUser.uid; // Accedemos al correo de nuestro usuario
-  console.log(userEmail);
+  const userEmail = auth.currentUser.uid;
   currentPost(id)
     .then((result) => {
-      const postData = result.data(); // accedes al array de likes
+      const postData = result.data();
       const likesArray = postData.Like;
-      console.log(likesArray);
       const likeViewer = likesArray.includes(userEmail);
-      console.log(likeViewer);
 
       if (likeViewer === false) {
-        // likesArray.unshift(userEmail);
         db.collection('newPost').doc(id).update({ Like: firebase.firestore.FieldValue.arrayUnion(userEmail) });
-        // updateLike(id, userEmail);
       } else {
         db.collection('newPost').doc(id).update({ Like: firebase.firestore.FieldValue.arrayRemove(userEmail) });
-        // updateDislike(id, userEmail);
       }
     }).catch(() => {
-      console.log("an error has ocurried")
+      console.log('an error has ocurried');
     });
 };

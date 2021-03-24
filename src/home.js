@@ -19,6 +19,9 @@ export const renderPost = (param, id) => `
       <img class="icon" id="edit" src="resources/Edit.png" alt="image" data-action="edit" data-id ="${id}">
     </div>
   </div>
+  <div id="modalContainer">
+      <div id="modalContent"></div>
+  </div>
   `;
 
 export const home = (container, firebase) => {
@@ -38,6 +41,7 @@ export const home = (container, firebase) => {
     </div>
     <div id="printData"></div>
       <div id="container2"></div>
+      
   `;
   // eslint-disable-next-line no-param-reassign
   container.innerHTML = html;
