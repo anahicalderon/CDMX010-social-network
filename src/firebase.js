@@ -1,9 +1,10 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // eslint-disable-next-line import/no-cycle
-import { renderPost } from './home.js';
+import { novaApp } from './auth/nova.js';
+import { home, renderPost } from './home.js';
+import { onNavigate } from './routes.js';
 
 const firebaseConfig = {
-
   apiKey: 'AIzaSyCE3V_6hn_oiPhJAvfRLJLygBVct9fIZRg',
   authDomain: 'novaapp-67e15.firebaseapp.com',
   projectId: 'novaapp-67e15',
@@ -26,6 +27,7 @@ export const savePost = (post) => db.collection('newPost')
     Subtitle: post.subtitle,
     Body: post.body,
     Fecha: Date.now(),
+    Like: [],
   });
 
 // TRAE LA DATA DE LA BASE DE DATOS.
@@ -46,39 +48,61 @@ export const getData = () => {
 
 // BORRA LOS POST
 export const deletePost = (id) => {
+  // console.log('We are inside deletePost');
+  console.log(id);
   db.collection('newPost').doc(id).delete()
-    .then((res) => {
-      alert('Post eliminado correctamente');
+    .then(() => {
+      console.log('Post was deleted in firebase console');
     })
     .catch((error) => {
-      alert('Ups, ocurrio un error');
+      console.log('An error have ocurred!');
     });
+  // console.log(id);
 };
 
+export const stateVerif = () => {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      const animate = () => {
+        setTimeout(() => {
+          onNavigate('/home');
+        }, 1500);
+      };
+      animate();
+    } else {
+      const animate = () => {
+        setTimeout(() => {
+          onNavigate('/login');
+        }, 1500);
+      };
+      animate();
+    }
+  });
+};
 
-// export const editPost = (id, Title, Subtitle, Body) => {
-//   document.getElementById('title').value = Title;
-//   document.getElementById('subtitle').value = Subtitle;
-//   document.getElementById('body').value = Body;
-//   const editButton = document.getElementById('btn');
-//   editButton.innerHTML = 'Editar';
+export const userInfo = () => {
+  const user = firebase.auth().currentUser;
+  const displayUserInfo = document.querySelector('#userName');
+  const userName = user.email;
+  const welcomeTemplate = `Bienvenida ${userName}`;
 
-//   editButton.addEventListener('click', () => {
-//     const post = db.collection('newPost').doc(id);
-//     const newTitle = document.getElementById('title').value;
-//     const newSubtitle = document.getElementById('subtitle').value;
-//     const newBody = document.getElementById('body').value;
+  displayUserInfo.innerHTML = welcomeTemplate;
+};
 
-//     post.update({
-//       Title: post.title,
-//       Subtitle: post.subtitle,
-//       Body: post.body,
-//     })
-//       .then((res) => {
-//         alert('Post eliminado correctamente');
-//         editButton.innerHTML = 'Publicar';
-//       }).catch((error) => {
-//         alert('Ups, ocurrio un error');
-//       });
-//   });
-// };
+export const likes = (id) => {
+  const userEmail = auth.currentUser.uid;
+  currentPost(id)
+    .then((result) => {
+      const postData = result.data();
+      const likesArray = postData.Like;
+      const likeViewer = likesArray.includes(userEmail);
+
+      if (likeViewer === false) {
+        db.collection('newPost').doc(id).update({ Like: firebase.firestore.FieldValue.arrayUnion(userEmail) });
+      } else {
+        db.collection('newPost').doc(id).update({ Like: firebase.firestore.FieldValue.arrayRemove(userEmail) });
+      }
+    }).catch(() => {
+      console.log('an error has ocurried');
+    });
+};
