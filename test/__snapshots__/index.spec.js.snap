@@ -2,18 +2,18 @@
 
 exports[`DOM render should show "sign In" view in the DOM 1`] = `
 "
-    <div>
-      <img id=\\"snipple\\" src=\\"resources/garabato.png\\" alt=\\"logo\\" class=\\"link\\" data-action=\\"home\\">
-      <hi1>Iniciar sesión
-      <form>
-          <input type=\\"text\\" placeholder=\\"Tu correo electrónico\\">
-          <input type=\\"password\\" placeholder=\\"Tu contraseña\\">
-          <button>Acceder</button>
-      </form>
-    </hi1></div>
-    
-    <div>
-    <button>Iniciar sesión con Google</button>
-    </div>
+      <div id=\\"signInContainer\\">
+        <img id=\\"bigSnipple\\" src=\\"resources/garabato.png\\" alt=\\"logo\\" class=\\"link\\">
+        <h1 id=\\"signInTitle\\">Iniciar sesión</h1>
+        <form>
+          <input id=\\"userEmail\\" type=\\"text\\" placeholder=\\"Tu correo electrónico\\">
+          <input id=\\"userPassword\\" type=\\"password\\" placeholder=\\"Tu contraseña\\">
+          <button class=\\"button\\" data-action=\\"signInUser\\">Acceder</button>
+        </form>
+      </div>
+
+      <div class=\\"signInButton\\">
+      <button class=\\"button\\" data-action=\\"signInWithGoogle\\">Iniciar sesión con Google</button>
+      </div>
     "
 `;

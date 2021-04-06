@@ -1,7 +1,7 @@
 // Test de interacción de el flujo de autentificación
 
 // import { login } from '../src/lib/login.js';
-import { signIn } from '../src/lib/signIn.js';
+import { signIn } from '../src/auth/signIn';
 // import { signUp } from '../src/lib/signUp.js';
 // import { eventsController } from '../src/routes.js';
 

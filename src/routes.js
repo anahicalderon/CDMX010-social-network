@@ -7,12 +7,12 @@ import { postPage } from './post.js';
 import { novaApp } from './auth/nova.js';
 import { signIn } from './auth/signIn.js';
 import { signUp } from './auth/signUp.js';
+import { editPost } from './postFunctions.js';
 import {
   signUpWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   signUpWithGoogle,
-  signInWithGoogle,
 }
   from './auth.js';
 import { deleteModal } from './PostController/modals.js';
@@ -95,7 +95,7 @@ const addButtonEvents = () => {
       } else if (e.target.dataset.action === 'like') {
         // const likeId = e.target.dataset.id;
         // console.log(likeId);
-        firebase.likesCounter(id);
+        firebase.likes(id);
       }
       // eslint-disable-next-line no-use-before-define
       eventsController(click, id);
@@ -149,8 +149,8 @@ const eventsController = (e, id) => {
     case 'signUpWithGoogle':
       signUpWithGoogle();
       break;
-    case 'signInWithGoogle':
-      signUpWithGoogle();
+    case 'signUpWithGoogle':
+      signInWithGoogle();
       break;
     case 'delete':
       // deletePost(id);
@@ -159,9 +159,9 @@ const eventsController = (e, id) => {
     // case 'confirm':
     //   deletePost(id);
     //   break;
-    // case 'edit':
-    //   editPost(id);
-    //   break;
+    case 'edit':
+      editPost(id);
+      break;
     // case 'like':
     //   firebase.likesCounter(id);
     //   break;

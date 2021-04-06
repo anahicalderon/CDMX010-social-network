@@ -1,4 +1,4 @@
-export const deleteConfirmation = (id) => {
+export const deleteConfirmation = (container, id) => {
   const modalContainer = document.getElementById('modalContainer');
   // console.log('in deleteConfirmation file', modalContainer);
   const modalTemplate = ` 
