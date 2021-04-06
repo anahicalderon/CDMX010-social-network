@@ -1,8 +1,17 @@
-// importamos la funcion que vamos a testear
-import { myFunction } from '../src/lib/index';
+// Test de interacción de el flujo de autentificación
 
-describe('myFunction', () => {
-  it('debería ser una función', () => {
-    expect(typeof myFunction).toBe('function');
+// import { login } from '../src/lib/login.js';
+import { signIn } from '../src/lib/signIn.js';
+// import { signUp } from '../src/lib/signUp.js';
+// import { eventsController } from '../src/routes.js';
+
+describe('DOM render', () => {
+    // const controller = eventsController();
+    it('should show "sign In" view in the DOM', () => {
+        const container = document.createElement('div');
+        signIn(container)
+        //const signInButton = document.querySelector('#signIn');
+        //signInButton.click();
+        expect(container.innerHTML).toMatchSnapshot();
   });
 });

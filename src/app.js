@@ -1,34 +1,16 @@
+/* eslint-disable no-console */
 // eslint-disable-next-line import/no-cycle
-import { routes, rootDiv } from './routes.js';
-import { savePost } from './firebase.js';
+import { routes, rootDiv, loadFirebase } from './routes.js';
+import * as firebase from './firebase.js';
 
-const postButton = document.getElementById('saveButton');
-const titleCard = document.getElementById('title');
-const subtitleCard = document.getElementById('subtitle');
-const bodyCard = document.getElementById('body');
+// ESTO SI VIVE AQUI
+loadFirebase(firebase);
+let homeView = routes[window.location.pathname];
+homeView(rootDiv, firebase);
 
-postButton.addEventListener('click', (e) => {
-  e.preventDefault();
-  const post = {
-    title: titleCard.value,
-    subtitle: subtitleCard.value,
-    body: bodyCard.value,
-    fecha: Date.now(),
-  };
-
-  if (!titleCard.value.trim() || !subtitleCard.value.trim() || !bodyCard.value.trim()) {
-    console.log('Input vacío!');
-    return;
-  }
-
-  savePost(post)
-    .then((docRef) => {
-      console.log('Document written whith ID: ', docRef.id);
-      titleCard.value = '';
-      subtitleCard.value = '';
-      bodyCard.value = '';
-    })
-    .catch((error) => console.log(error));
-});
-
-// getData();
+window.onpopstate = () => {
+  homeView = routes[window.location.pathname];
+  homeView(rootDiv, firebase);
+};
+// DELETEPOST PUEDE VIVIR EN OTRA PARTE:
+// DELETE POST FUNCTION
