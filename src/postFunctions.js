@@ -1,5 +1,6 @@
+// eslint-disable-next-line import/no-cycle
 import {
-  savePost, deletePost, currentPost, db,
+  savePost, currentPost, db,
 } from './firebase.js';
 
 // TODA LA MECÁNICA DE CONSTRUCCIÓN DEL BOTÓN.
@@ -14,36 +15,38 @@ const postEditado = (id) => {
     Subtitle: subtitle,
     Body: body,
     Fecha: Date.now(),
-  }).then((result) => {
-    const editBotton = document.querySelector('.editButton');
-    editBotton.classList.remove('editButton');
-    editBotton.classList.add('dissapear');
-    const saveBotton = document.getElementById('btn');
-    saveBotton.classList.remove('dissapear');
-    saveBotton.classList.add('button');
+  })
+    .then(() => {
+      const editBotton = document.querySelector('.editButton');
+      editBotton.classList.remove('editButton');
+      editBotton.classList.add('dissapear');
+      const saveBotton = document.getElementById('btn');
+      saveBotton.classList.remove('dissapear');
+      saveBotton.classList.add('button');
 
-    document.getElementById('title').value = '';
-    document.getElementById('subtitle').value = '';
-    document.getElementById('body').value = '';
-  }).catch((error) => console.log(error));
+      document.getElementById('title').value = '';
+      document.getElementById('subtitle').value = '';
+      document.getElementById('body').value = '';
+    })
+    .catch((error) => console.log(error));
 };
 
 export function editPost(id) {
   currentPost(id)
     .then((result) => {
-      // eslint-disable-next-line no-const-assign
       const infoData = result.data();
-      // AQUI INGRESO LA DATA EN LOS INPUTS
+
       document.getElementById('title').value = infoData.Title;
       document.getElementById('subtitle').value = infoData.Subtitle;
       document.getElementById('body').value = infoData.Body;
+
       const editBotton = document.createElement('BOTTON');
       const printBotton = document.getElementById('newPost');
+
       editBotton.textContent = 'Editar Publicación';
       editBotton.classList.add('editButton');
       printBotton.appendChild(editBotton);
 
-      // SE DESAPARECE EL BOTÓN
       const saveBotton = document.getElementById('btn');
       saveBotton.classList.remove('button');
       saveBotton.classList.add('dissapear');
@@ -69,11 +72,10 @@ export const makingPost = () => {
   };
 
   if (!titleCard.value.trim() || !subtitleCard.value.trim() || !bodyCard.value.trim()) {
-    alert('Input vacío!');
+    alert('Te olvidaste de llenar los campos');
   } else {
     savePost(post)
       .then((docRef) => {
-        console.log('Document written whith ID: ', docRef.id);
         titleCard.value = '';
         subtitleCard.value = '';
         bodyCard.value = '';

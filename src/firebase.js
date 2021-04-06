@@ -1,7 +1,6 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // eslint-disable-next-line import/no-cycle
-import { novaApp } from './auth/nova.js';
-import { home, renderPost } from './home.js';
+import { renderPost } from './home.js';
 import { onNavigate } from './routes.js';
 
 const firebaseConfig = {
@@ -13,11 +12,13 @@ const firebaseConfig = {
   appId: '1:282489634860:web:97a4ad5b81716f2b0f5189',
   measurementId: 'G-N31JQDJTSM',
 };
-// Initialize Firebase
+
 firebase.initializeApp(firebaseConfig);
+
 export const auth = firebase.auth();
-// eslint-disable-next-line no-unused-vars
+
 export const db = firebase.firestore();
+
 export const currentPost = (id) => db.collection('newPost').doc(id).get();
 
 // GUARDA INFORMACIÓN DE USUARIIO EN LA BASE DE DATOS.
@@ -104,5 +105,79 @@ export const likes = (id) => {
       }
     }).catch(() => {
       console.log('an error has ocurried');
+    });
+};
+
+// AUTH FROM FIREBASE
+// CREATE USER
+export const signUpWithEmailAndPassword = () => {
+  const userName = document.getElementById('userName').value;
+  const userEmail = document.getElementById('userEmail').value;
+  const userPassword = document.getElementById('userPassword').value;
+  const expression = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+  if (userName.length === 0
+    || userEmail.length === 0
+    || userPassword.length === 0) {
+    alert('ERROR, Asegurate de llenar lo inputs');
+  } else if (!expression.test(userEmail)) {
+    alert('No es un formato de correo válido!');
+  } else {
+    auth.createUserWithEmailAndPassword(userEmail, userPassword)
+      .then(() => {
+        alert(`Bienvenida a novaApp! ${userName}`);
+        onNavigate('/home');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
+// SIGN-IN
+export const signInWithEmailAndPassword = () => {
+  const userEmail = document.getElementById('userEmail').value;
+  const userPassword = document.getElementById('userPassword').value;
+  const expression = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+  if (userEmail.length === 0
+    || userPassword.length === 0) {
+    alert('Error, asegurate de llenar los inputs.');
+  } else if (!expression.test(userEmail)) {
+    alert('No es un formato de correo válido!');
+  } else {
+    auth.signInWithEmailAndPassword(userEmail, userPassword)
+      .then((user) => {
+        console.log(user);
+        onNavigate('/home');
+      })
+      .catch((error) => {
+        alert('El correo o la contraseña ingresados son inválidos');
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+      });
+  }
+};
+
+// SIGN-OUT
+export const signOut = () => {
+  auth.signOut()
+    .then((user) => {
+      onNavigate('/');
+    }).catch((error) => {
+      alert('Un error ha ocurrido. Inténtalo de nuevo'); // Más adelante sería un error 404.
+    });
+};
+
+// SIGN UP AND SIGN IN WITH GOOGLW
+export const signUpWithGoogle = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then((user) => {
+      console.log(user);
+      onNavigate('/home');
+    }).catch((error) => {
+      console.log(error);
+      // eslint-disable-next-line no-alert
     });
 };

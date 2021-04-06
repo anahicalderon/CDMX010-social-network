@@ -18,4 +18,3 @@ export const login = (container) => {
   // eslint-disable-next-line no-param-reassign
   container.innerHTML = html;
 };
-;
